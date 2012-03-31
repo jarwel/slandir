@@ -1,0 +1,5 @@
+<%= form_tag login_new_path, :class => "navbar-text pull-right" do %>
+  <%= text_field_tag "newEmail", @newEmail, { :class => "span2", :placeholder => "Email Address" } %>
+  <%= password_field_tag "newPassword", @newPassword, { :class => "span2", :placeholder => "Password" } %>
+  <%= submit_tag "Sign In", :class => "btn btn-primary btn-small" %>
+<% end %>

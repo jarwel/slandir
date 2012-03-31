@@ -1,0 +1,37 @@
+<div class="container">
+
+  <div class="hero-unit">
+    <h2>Tell us what happened</h2>
+    <p>Fill out the information in the form below.</p>
+  </div>
+
+  <%= form_tag submit_show_path, :id => "grievance-form" do %>
+    <div class="row">
+      <div class="offset1 span2"><h3>Post as:</h3></div>
+      <div class="offset3">
+        <div class="row">
+          <div class="span8">
+            <h4>
+              <%= radio_button_tag "author", format_last_initial(current_account.firstName, current_account.lastName) %>
+              <%= format_last_initial(current_account.firstName, current_account.lastName) %>
+            </h4>
+          </div>
+          <div class="span8">
+            <h4>
+              <%= radio_button_tag "author", "Anonymous" %>
+              Anonymous
+            </h4>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="offset1 span2"><h3>Description:</h3></div>
+      <div class="offset3"><%= text_area_tag "description", @description, :class => "span8 required description-text" %></div>
+    </div>
+    <div class="row">
+      <div class="offset10"><%= submit_tag "Submit", :class => "btn btn-primary btn-large" %></div>
+    </div>
+  <% end %>
+
+</div>

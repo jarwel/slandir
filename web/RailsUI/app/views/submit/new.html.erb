@@ -1,0 +1,53 @@
+<div class="container">
+
+  <div class="hero-unit">
+    <h2>First, help us locate the individual you wish to post about.</h2>
+    <p>Enter as much information as you can and our algorithm will attempt to match with individuals we have seen in the past.</p>
+  </div>
+
+  <%= form_tag submit_match_path, :id => "person-form" do %>
+    <div class="row">
+      <div class="offset2 span2"><h3 class="field">Name:</h3></div>
+      <div class="offset4"><%= text_field_tag "name", @name, :class => "span4 required" %></div>
+    </div>
+    <div class="row">
+      <div class="offset2 span2"><h3 class="field">Gender:</h3></div>
+      <div class="offset4"><%= text_field_tag "gender", @gender, :class => "span1" %></div>
+    </div>
+    <div class="row">
+      <div class="offset2 span2"><h3 class="field">Birth date:</h3></div>
+      <div class="offset4"><%= text_field_tag "birth_date", @birth_date, :class => "span2 date", :maxlength => "10" %></div>
+    </div>
+    <div class="row">
+      <div class="offset2 span2"><h3 class="field">Phone:</h3></div>
+      <div class="offset4"><%= text_field_tag "phone", @phone, :class => "span2" %></div>
+    </div>
+    <div class="row">
+      <div class="offset2 span2"><h3 class="field">Email:</h3></div>
+      <div class="offset4"><%= text_field_tag "email", @email, :class => "span2 email" %></div>
+    </div>
+    <div class="row">
+      <div class="offset2 span2"><h3 class="field">Address:</h3></div>
+    </div>
+    <div class="row">
+      <div class="offset3 span1"><h5 class="sub-field">Street:</h5></div>
+      <div class="offset4"><%= text_field_tag "street", @street, :class => "span5" %></div>
+    </div>
+    <div class="row">
+      <div class="offset3 span1"><h5 class="sub-field">City:</h5></div>
+      <div class="offset4"> <%= text_field_tag "city", @city, :class => "span3" %></div>
+    </div>
+    <div class="row">
+      <div class="offset3 span1"><h5 class="sub-field">State:</h5></div>
+      <div class="offset4"><%= text_field_tag "state", @state, :class => "span1 required", :maxlength => "2" %></div>
+    </div>
+    <div class="row">
+      <div class="offset3 span1"><h5 class="sub-field">Zip:</h5></div>
+      <div class="offset4"><%= text_field_tag "zip", @zip, :class => "span2", :length => 5 %></div>
+</div>
+    <div class="row">
+      <div class="offset10"><%= submit_tag "Finished", :class => "btn btn-primary btn-large" %></div>
+    </div>
+  <% end %>
+
+</div>

@@ -1,0 +1,14 @@
+<h3>Search Profiles</h3>
+<div class="well sidebar-nav">
+  <%= form_tag search_index_path do %>
+    <ul class="nav nav-list">
+      <li>First Name:</li>
+      <li><%= text_field_tag "first_name", @first_name, :class => "span2" %></li>
+      <li>Last Name:</li>
+      <li><%= text_field_tag "last_name", @last_name, :class => "span2" %></li>
+      <li>State:</li>
+      <li><%= text_field_tag "state", @state, :class => "span1", :maxlength => "2" %></li>
+    </ul>
+      <%= submit_tag "Search", :class => "offset1 btn btn-small" %>
+  <% end %>
+</div>

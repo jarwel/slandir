@@ -1,0 +1,29 @@
+<div class="container">
+
+  <div class="hero-unit">
+    <h2>One of the following individuals may be the person you are looking for.</h2>
+    <p>Review the profiles below carefully. If you are certain that the individual is not already listed, please select the following link to create a new one.</p>
+    <%= link_to "New Profile", submit_create_path, :class => "btn btn-primary btn-large", :method => :post %>
+  </div>
+
+  <% @persons.each do |person| %>
+    <div class="row">
+      <div class="offset1 span2"><%= image_tag "default.jpg", :class => "person-image-small" %></div>
+      <div class="span7">
+        <h2><%= person.firstName %> <%= person.lastName %></h2>
+        <div class="row">
+          <% if !person.birthDate.blank? %>
+            <div class="span3"><%= format_age(person.birthDate) %> year old <%= person.gender %></div>
+          <% end %>
+        </div>
+        <div class="row">
+          <% if !person.address.blank? %>
+            <div class="span3"><%= format_city_state_zip(person.address.city, person.address.state) %></div>
+          <% end %>
+        </div>
+      </div>
+      <div><%= link_to "Choose", submit_create_path(:personId => person.id), :class => "btn btn-primary btn-large", :method => :post %></div>
+    </div>
+  <% end %>
+
+</div>

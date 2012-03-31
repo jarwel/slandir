@@ -1,0 +1,64 @@
+<div class="container">
+  <div class="hero-unit">
+    <div class="row">
+      <div class="span3"><%= image_tag "default.jpg", :class => "person-image-large" %></div>
+      <div class="span7">
+        <div class="row">
+          <h2 class="span7"><%= @person.firstName %> <%= @person.middleName %> <%= @person.lastName %></h2>
+        </div>
+        <br>
+        <% if !@person.gender.blank? %>
+          <div class="row">
+            <div class="span2"><b>Gender:</b></div>
+            <div class="span5"><%= @person.gender %></div>
+          </div>
+        <% end %>
+        <% if !@person.birthDate.blank? %>
+          <div class="row">
+            <div class="span2"><b>Birth date:</b></div>
+            <div class="span5"><%= format_birth_date(@person.birthDate) %></div>
+          </div>
+        <% end %>
+        <% if !@person.phone.blank? %>
+          <div class="row">
+            <div class="span2"><b>Phone number:</b></div>
+            <div class="span5"><%= format_phone(@person.phone) %></div>
+          </div>
+        <% end %>
+        <% if !@person.email.blank? %>
+          <div class="row">
+            <div class="span2"><b>Email address:</b></div>
+            <div class="span5"><%= @person.email %></div>
+          </div>
+        <% end %>
+        <br>
+        <% if !@person.address.nil? %>
+          <div class="row">
+            <div class="span2"><b>Street address:</b></div>
+            <div class="span5">
+              <div class="row">
+                <div class="span5"><%= @person.address.street %></div>
+              </div>
+              <div class="row">
+                <div class="span5"><%= format_city_state_zip(@person.address.city, @person.address.state, @person.address.zip) %></div>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <% @grievances.each do |grievance| %>
+    <div class="row offset1">
+      <div class="row">
+        <div class="span3"><h3><%= grievance.author %></h3></div>
+        <div class="offset9"><%= grievance.created.strftime("%B %Y") %></div>
+      </div>
+      <div class="row well">
+        <div class="span10"><%= grievance.description %></div>
+      </div>
+    </div>
+  <% end %>
+
+</div>

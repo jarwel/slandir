@@ -1,0 +1,15 @@
+<div class="container">
+  <div class="hero-unit">
+    <h2>Manage Grievances</h2>
+    <p>Removing a grievance will hide it from public view. This change can not be undone. </p>
+  </div>
+  <% @grievances.each do |grievance| %>
+    <div class="row">
+      <div class="span5 offset1"><h3>Posted as <%= grievance.author %> in <%= grievance.created.strftime("%B %Y") %></h3></div>
+      <div class="offset4 span1"><%= link_to "Remove", manage_destroy_path(:grievanceId => grievance.id), :class => "btn", :method => :delete %></div>
+    </div>
+    <div class="row">
+      <div class="span10 offset1 well"><%= grievance.description %></div>
+    </div>
+  <% end %>
+</div>
