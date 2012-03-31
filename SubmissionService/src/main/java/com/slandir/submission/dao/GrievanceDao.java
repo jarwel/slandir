@@ -1,5 +1,6 @@
 package com.slandir.submission.dao;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.slandir.submission.model.Grievance;
 
@@ -14,10 +15,16 @@ public class GrievanceDao {
     private final Map<UUID, List<Grievance>> accountIndex = Maps.newHashMap();
 
     public List<Grievance> fetchByPerson(UUID personId) {
+        if(personIndex.get(personId) == null) {
+            return Lists.newArrayList();
+        }
         return personIndex.get(personId);
     }
 
     public List<Grievance> fetchByAccount(UUID accountId) {
+        if(accountIndex.get(accountId)  == null) {
+            return Lists.newArrayList();
+        }
         return accountIndex.get(accountId);
     }
 
