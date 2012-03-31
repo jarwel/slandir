@@ -8,8 +8,8 @@
       </a>
       <div class="brand">Slandir</div>
       <div class="nav-collapse">
-        <ul class="nav">
-          <li class="active"><%= link_to "Home", search_home_path %></li>
+        <ul id="navigation-bar" class="nav">
+          <li><%= link_to "Home", search_home_path %></li>
           <li><a href="#about">About</a></li>
           <li><a href="#contact">Contact</a></li>
           <% if !current_account.nil? %>
