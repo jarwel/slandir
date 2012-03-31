@@ -12,6 +12,7 @@
         <module>IdentityService</module>
         <module>SubmissionService</module>
         <module>AccountService</module>
+        <module>web/RailsUI</module>
     </modules>
 
     <distributionManagement>
