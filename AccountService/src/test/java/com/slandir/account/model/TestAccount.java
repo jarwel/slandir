@@ -28,18 +28,32 @@ public class TestAccount {
     public void testEquivalence() {
         equivalenceTester()
             .addEquivalentGroup(
-                new Account(UUID.fromString("2c3c4d11-ddc0-4be1-932c-89c0525d3d2e"), "someone@somewhere.com", "p@ssw0rd", "John", "Doe"),
-                new Account(UUID.fromString("2c3c4d11-ddc0-4be1-932c-89c0525d3d2e"), "noone@nowhere.com", "p@ssw0rd", "John", "Doe"),
-                new Account(UUID.fromString("2c3c4d11-ddc0-4be1-932c-89c0525d3d2e"), "someone@somewhere.com", "Sl@ndr", "John", "Doe"),
-                new Account(UUID.fromString("2c3c4d11-ddc0-4be1-932c-89c0525d3d2e"), "someone@somewhere.com", "p@ssw0rd", "Jane", "Doe"),
-                new Account(UUID.fromString("2c3c4d11-ddc0-4be1-932c-89c0525d3d2e"), "someone@somewhere.com", "p@ssw0rd", "John", "Roe")
+                new Account(UUID.fromString("2c3c4d11-ddc0-4be1-932c-89c0525d3d2e"), "john@somewhere.com", "p@ssw0rd", "John", "Doe"),
+                new Account(UUID.fromString("2c3c4d11-ddc0-4be1-932c-89c0525d3d2e"), "john@somewhere.com", "Sl@nd1r", "John", "Doe"),
+                new Account(UUID.fromString("2c3c4d11-ddc0-4be1-932c-89c0525d3d2e"), "john@somewhere.com", null, "John", "Doe"),
+                new Account(UUID.fromString("2c3c4d11-ddc0-4be1-932c-89c0525d3d2e"), "john@somewhere.com", "p@ssw0rd", "Jane", "Doe"),
+                new Account(UUID.fromString("2c3c4d11-ddc0-4be1-932c-89c0525d3d2e"), "john@somewhere.com", "p@ssw0rd", "John", "Roe")
             )
             .addEquivalentGroup(
-                new Account(UUID.fromString("02e0a47c-0bb9-424f-b20a-cd08001dd6a1"), "someone@somewhere.com", "p@ssw0rd", "John", "Doe"),
-                new Account(UUID.fromString("02e0a47c-0bb9-424f-b20a-cd08001dd6a1"), "noone@nowhere.com", "p@ssw0rd", "John", "Doe"),
-                new Account(UUID.fromString("02e0a47c-0bb9-424f-b20a-cd08001dd6a1"), "someone@somewhere.com", "Sl@ndr", "John", "Doe"),
-                new Account(UUID.fromString("02e0a47c-0bb9-424f-b20a-cd08001dd6a1"), "someone@somewhere.com", "p@ssw0rd", "Jane", "Doe"),
-                new Account(UUID.fromString("02e0a47c-0bb9-424f-b20a-cd08001dd6a1"), "someone@somewhere.com", "p@ssw0rd", "John", "Roe")
+                new Account(UUID.fromString("02e0a47c-0bb9-424f-b20a-cd08001dd6a1"), "john@somewhere.com", "p@ssw0rd", "John", "Doe"),
+                new Account(UUID.fromString("02e0a47c-0bb9-424f-b20a-cd08001dd6a1"), "john@somewhere.com", "Sl@nd1r", "John", "Doe"),
+                new Account(UUID.fromString("02e0a47c-0bb9-424f-b20a-cd08001dd6a1"), "john@somewhere.com", null, "John", "Doe"),
+                new Account(UUID.fromString("02e0a47c-0bb9-424f-b20a-cd08001dd6a1"), "john@somewhere.com", "p@ssw0rd", "Jane", "Doe"),
+                new Account(UUID.fromString("02e0a47c-0bb9-424f-b20a-cd08001dd6a1"), "john@somewhere.com", "p@ssw0rd", "John", "Roe")
+            )
+            .addEquivalentGroup(
+                new Account(null, "john@somewhere.com", "p@ssw0rd", "John", "Doe"),
+                new Account(null, "john@somewhere.com", "Sl@nd1r", "John", "Doe"),
+                new Account(null, "john@somewhere.com", null, "John", "Doe"),
+                new Account(null, "john@somewhere.com", "p@ssw0rd", "Jane", "Doe"),
+                new Account(null, "john@somewhere.com", "p@ssw0rd", "John", "Roe")
+            )
+            .addEquivalentGroup(
+                new Account(UUID.fromString("2c3c4d11-ddc0-4be1-932c-89c0525d3d2e"), "jane@somewhere.com", "p@ssw0rd", "John", "Doe"),
+                new Account(UUID.fromString("2c3c4d11-ddc0-4be1-932c-89c0525d3d2e"), "jane@somewhere.com", "Sl@nd1r", "John", "Doe"),
+                new Account(UUID.fromString("2c3c4d11-ddc0-4be1-932c-89c0525d3d2e"), "jane@somewhere.com", null, "John", "Doe"),
+                new Account(UUID.fromString("2c3c4d11-ddc0-4be1-932c-89c0525d3d2e"), "jane@somewhere.com", "p@ssw0rd", "Jane", "Doe"),
+                new Account(UUID.fromString("2c3c4d11-ddc0-4be1-932c-89c0525d3d2e"), "jane@somewhere.com", "p@ssw0rd", "John", "Roe")
             )
         .check();
     }

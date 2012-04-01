@@ -23,7 +23,7 @@ public class Account {
         @JsonProperty("lastName") String lastName
         
     ) {
-        this.id = Preconditions.checkNotNull(id);
+        this.id = id;
         this.email = Preconditions.checkNotNull(email);
         this.firstName = Preconditions.checkNotNull(firstName);
         this.lastName = Preconditions.checkNotNull(lastName);
@@ -62,13 +62,16 @@ public class Account {
 
         Account account = (Account) o;
 
-        if (!id.equals(account.id)) return false;
+        if (!email.equals(account.email)) return false;
+        if (id != null ? !id.equals(account.id) : account.id != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + email.hashCode();
+        return result;
     }
 }
