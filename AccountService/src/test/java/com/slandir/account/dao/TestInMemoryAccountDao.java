@@ -10,13 +10,13 @@ import java.util.UUID;
 import static org.testng.Assert.assertEquals;
 
 
-public class TestAccountDao {
+public class TestInMemoryAccountDao {
 
-    private AccountDao accountDao;
+    private InMemoryAccountDao accountDao;
 
     @BeforeMethod
     public void setUp() {
-        accountDao = new AccountDao();
+        accountDao = new InMemoryAccountDao();
     }
 
     @Test

@@ -1,6 +1,7 @@
 package com.slandir.account.resource;
 
 import com.slandir.account.dao.AccountDao;
+import com.slandir.account.dao.InMemoryAccountDao;
 import com.slandir.account.model.Account;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -23,7 +24,7 @@ public class TestAccountResource {
     
     @BeforeMethod
     public void setUp() {
-        mockAccountDao = mock(AccountDao.class);
+        mockAccountDao = mock(InMemoryAccountDao.class);
         accountResource = new AccountResource(mockAccountDao);
     }
     

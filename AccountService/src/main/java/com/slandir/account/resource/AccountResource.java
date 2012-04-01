@@ -4,6 +4,7 @@ import com.google.common.base.Charsets;
 import com.google.common.base.Preconditions;
 import com.google.inject.Inject;
 import com.slandir.account.dao.AccountDao;
+import com.slandir.account.dao.InMemoryAccountDao;
 import com.slandir.account.model.Account;
 
 import javax.ws.rs.Consumes;
