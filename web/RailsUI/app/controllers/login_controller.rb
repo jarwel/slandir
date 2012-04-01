@@ -17,24 +17,28 @@ class LoginController < ApplicationController
   end
 
   def create
+    @email = params[:email]
+    @firstName = params[:firstName]
+    @lastName = params[:lastName]
+
     if verify_recaptcha
       account = Account.new({
-        :email => params[:email],
+        :email => @email,
         :password => params[:password],
-        :firstName => params[:firstName],
-        :lastName => params[:lastName],
+        :firstName => @firstName,
+        :lastName => @lastName,
       })
 
       if account.save
         set_current_account(account)
         redirect_to root_path
       else
-        flash[:error] = "An account with that email address already exists."
-        redirect_to login_show_path
+        flash[:error] = "An account with this email address already exists."
+        render :action => 'show'
       end
     else
       flash[:error] = "Incorrect Captcha code entered."
-      redirect_to :back
+      render :action => 'show'
     end
   end
 
