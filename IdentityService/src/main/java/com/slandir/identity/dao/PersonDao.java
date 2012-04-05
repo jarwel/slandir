@@ -5,6 +5,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.slandir.identity.model.Address;
 import com.slandir.identity.model.Person;
+import com.slandir.identity.util.Simulacrum;
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 
@@ -94,47 +95,8 @@ public class PersonDao {
             nameIndex.get(oldPerson.getLastName().toLowerCase()).remove(oldPerson);
         }
         
-        Person newPerson = combine(oldPerson, updatePerson);
+        Person newPerson = new Simulacrum(oldPerson).assimilate(updatePerson).toPerson();
         save(newPerson);
-    }
-    
-    private Person combine(Person oldPerson, Person updatePerson) {
-        UUID id = oldPerson.getId();
-        String firstName = oldPerson.getFirstName();
-        String middleName = oldPerson.getMiddleName();
-        String lastName = oldPerson.getLastName();
-        String gender = oldPerson.getGender();
-        DateTime birthDate = oldPerson.getBirthDate();
-        String phone = oldPerson.getPhone();
-        String email = oldPerson.getEmail();
-        Address address = oldPerson.getAddress();
-        
-        if(StringUtils.isBlank(firstName)) {
-            firstName = updatePerson.getFirstName();
-        }
-        if(StringUtils.isBlank(middleName)) {
-            middleName = updatePerson.getMiddleName();
-        }
-        if(StringUtils.isBlank(lastName)) {
-            lastName = updatePerson.getLastName();
-        }
-        if(StringUtils.isBlank(gender)) {
-            gender = updatePerson.getGender();
-        }
-        if(birthDate == null) {
-            birthDate = updatePerson.getBirthDate();
-        }
-        if(StringUtils.isBlank(phone)) {
-            phone = updatePerson.getPhone();
-        }
-        if(StringUtils.isBlank(email)) {
-            email = updatePerson.getEmail();
-        }
-        if(address == null) {
-            address = updatePerson.getAddress();
-        }
-        
-        return new Person(id, firstName, middleName, lastName, gender, birthDate, phone, email, address);
     }
 
 }

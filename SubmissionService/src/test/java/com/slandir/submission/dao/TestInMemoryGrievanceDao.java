@@ -2,6 +2,7 @@ package com.slandir.submission.dao;
 
 import com.google.common.collect.Lists;
 import com.slandir.submission.model.Grievance;
+import org.joda.time.DateTime;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -13,13 +14,13 @@ import java.util.UUID;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
-public class TestGrievanceDao {
+public class TestInMemoryGrievanceDao {
 
     private GrievanceDao grievanceDao;
 
     @BeforeMethod
     public void setUp() {
-        this.grievanceDao = new GrievanceDao();
+        this.grievanceDao = new InMemoryGrievanceDao();
     }
 
     @AfterMethod
@@ -31,7 +32,7 @@ public class TestGrievanceDao {
     public void testFetchByAccount() {
         UUID accountId = UUID.randomUUID();
         
-        Grievance grievance = new Grievance(UUID.randomUUID(), accountId, UUID.randomUUID(), "Anonymous", "Grievance text goes here.", new Date());
+        Grievance grievance = new Grievance(UUID.randomUUID(), accountId, UUID.randomUUID(), "Anonymous", "Grievance text goes here.", DateTime.now());
         
         grievanceDao.save(grievance);
 
@@ -45,7 +46,7 @@ public class TestGrievanceDao {
     public void testFetchByPerson() {
         UUID personId = UUID.randomUUID();
 
-        Grievance grievance = new Grievance(UUID.randomUUID(), UUID.randomUUID(), personId, "Anonymous", "Grievance text goes here.", new Date());
+        Grievance grievance = new Grievance(UUID.randomUUID(), UUID.randomUUID(), personId, "Anonymous", "Grievance text goes here.", DateTime.now());
 
         grievanceDao.save(grievance);
 
@@ -61,7 +62,7 @@ public class TestGrievanceDao {
         UUID accountId = UUID.randomUUID();
         UUID personId = UUID.randomUUID();
         
-        Grievance grievance = new Grievance(grievanceId, accountId, personId, "Anonymous", "Grievance text goes here.", new Date());
+        Grievance grievance = new Grievance(grievanceId, accountId, personId, "Anonymous", "Grievance text goes here.", DateTime.now());
 
         grievanceDao.save(grievance);
         grievanceDao.remove(grievanceId);

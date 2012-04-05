@@ -12,7 +12,7 @@ import static org.testng.Assert.assertEquals;
 
 public class TestInMemoryAccountDao {
 
-    private InMemoryAccountDao accountDao;
+    private AccountDao accountDao;
 
     @BeforeMethod
     public void setUp() {

@@ -2,6 +2,7 @@ package com.slandir.submission;
 
 import com.google.inject.Injector;
 import com.proofpoint.bootstrap.Bootstrap;
+import com.proofpoint.cassandra.CassandraModule;
 import com.proofpoint.discovery.client.Announcer;
 import com.proofpoint.discovery.client.DiscoveryModule;
 import com.proofpoint.experimental.jmx.JmxHttpModule;
@@ -31,6 +32,7 @@ public class Main {
             new JmxHttpModule(),
             new JmxHttpRpcModule(),
             new LogJmxModule(),
+            new CassandraModule(),
             new MainModule()
         );
 

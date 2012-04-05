@@ -4,32 +4,45 @@ import com.google.common.base.Predicate;
 import com.google.inject.Inject;
 import com.proofpoint.json.JsonCodec;
 import com.slandir.account.model.Account;
+import me.prettyprint.cassandra.model.BasicColumnDefinition;
+import me.prettyprint.cassandra.model.BasicColumnFamilyDefinition;
+import me.prettyprint.cassandra.model.IndexedSlicesQuery;
 import me.prettyprint.cassandra.model.QuorumAllConsistencyLevelPolicy;
+import me.prettyprint.cassandra.serializers.ByteBufferSerializer;
 import me.prettyprint.cassandra.serializers.StringSerializer;
+import me.prettyprint.cassandra.serializers.UUIDSerializer;
 import me.prettyprint.cassandra.service.ThriftCfDef;
 import me.prettyprint.cassandra.service.ThriftKsDef;
+import me.prettyprint.cassandra.service.template.ColumnFamilyUpdater;
+import me.prettyprint.cassandra.service.template.ThriftColumnFamilyTemplate;
 import me.prettyprint.hector.api.Cluster;
 import me.prettyprint.hector.api.Keyspace;
-import me.prettyprint.hector.api.beans.HColumn;
+import me.prettyprint.hector.api.beans.Row;
 import me.prettyprint.hector.api.ddl.ColumnFamilyDefinition;
+import me.prettyprint.hector.api.ddl.ColumnIndexType;
+import me.prettyprint.hector.api.ddl.ComparatorType;
 import me.prettyprint.hector.api.ddl.KeyspaceDefinition;
 import me.prettyprint.hector.api.factory.HFactory;
-import me.prettyprint.hector.api.mutation.Mutator;
-import me.prettyprint.hector.api.query.ColumnQuery;
+
+import java.nio.ByteBuffer;
+import java.util.List;
+import java.util.UUID;
 
 import static com.google.common.collect.Iterables.find;
-import static com.proofpoint.json.JsonCodec.jsonCodec;
 
 public class CassandraAccountDao implements AccountDao {
 
-    private static final String KEY_SPACE = "ACCOUNT";
-    private static final String COLUMN_FAMILY = "ACCOUNT";
-    private static final String COLUMN_NAME = "VALUE";
+    private static final String KEY_SPACE = "account";
+    private static final String COLUMN_FAMILY = "account";
+    private static final String COLUMN_NAME = "data";
+
+    private static final String EMAIL_COLUMN = "email";
     
-    private static final JsonCodec<Account> accountCodec = jsonCodec(Account.class);
-    
+    private static final JsonCodec<Account> accountCodec = JsonCodec.jsonCodec(Account.class);
+
     private final Keyspace keyspace;
-    
+    private final ThriftColumnFamilyTemplate<UUID, String> template;
+
     @Inject
     public CassandraAccountDao(Cluster cluster) {
 
@@ -40,36 +53,50 @@ public class CassandraAccountDao implements AccountDao {
 
         ColumnFamilyDefinition columnFamilyDefinition = find(cluster.describeKeyspace(KEY_SPACE).getCfDefs(), named(COLUMN_FAMILY), null);
         if(columnFamilyDefinition == null) {
-            cluster.addColumnFamily(new ThriftCfDef(KEY_SPACE, COLUMN_FAMILY));
+
+            //Create secondary index on email
+            BasicColumnDefinition emailColumnDefinition = new BasicColumnDefinition();
+            emailColumnDefinition.setName(StringSerializer.get().toByteBuffer(EMAIL_COLUMN));
+            emailColumnDefinition.setIndexName(String.format("%s_idx", EMAIL_COLUMN));
+            emailColumnDefinition.setIndexType(ColumnIndexType.KEYS);
+            emailColumnDefinition.setValidationClass(ComparatorType.ASCIITYPE.getClassName());
+
+            columnFamilyDefinition = new BasicColumnFamilyDefinition();
+            columnFamilyDefinition.setKeyspaceName(KEY_SPACE);
+            columnFamilyDefinition.setName(COLUMN_FAMILY);
+            columnFamilyDefinition.addColumnDefinition(emailColumnDefinition);
+
+            cluster.addColumnFamily(new ThriftCfDef(columnFamilyDefinition));
         }
-        
+
         keyspace = HFactory.createKeyspace(KEY_SPACE, cluster);
         keyspace.setConsistencyLevelPolicy(new QuorumAllConsistencyLevelPolicy());
+
+        template = new ThriftColumnFamilyTemplate<UUID, String>(keyspace, COLUMN_FAMILY, UUIDSerializer.get(), StringSerializer.get());
     }
     
     @Override
     public void save(Account account) {
-        Mutator mutator = HFactory.createMutator(keyspace, StringSerializer.get());
-        mutator.addInsertion(
-            account.getEmail(),
-            COLUMN_FAMILY,
-            HFactory.createColumn(COLUMN_NAME, accountCodec.toJson(account), StringSerializer.get(), StringSerializer.get())
-        );
-        mutator.execute();
+        ColumnFamilyUpdater<UUID, String> columnFamilyUpdater = template.createUpdater(account.getId());
+        columnFamilyUpdater.setString(EMAIL_COLUMN, account.getEmail());
+        columnFamilyUpdater.setString(COLUMN_NAME, accountCodec.toJson(account));
+        template.update(columnFamilyUpdater);
     }
 
     @Override
     public Account fetch(String email) {
-        ColumnQuery<String, String, String> columnQuery = HFactory.createColumnQuery(keyspace, StringSerializer.get(), StringSerializer.get(), StringSerializer.get());
-        columnQuery.setKey(email);
-        columnQuery.setColumnFamily(COLUMN_FAMILY);
-        columnQuery.setName(COLUMN_NAME);
-        
-        HColumn<String, String> hColumn =  columnQuery.execute().get();
-        if(hColumn != null && hColumn.getValue() != null) {
-            return accountCodec.fromJson(hColumn.getValue());
+        IndexedSlicesQuery<UUID, String, ByteBuffer> indexedSlicesQuery = HFactory.createIndexedSlicesQuery(keyspace, UUIDSerializer.get(), StringSerializer.get(), ByteBufferSerializer.get());
+        indexedSlicesQuery.addEqualsExpression(EMAIL_COLUMN, StringSerializer.get().toByteBuffer(email));
+        indexedSlicesQuery.setColumnFamily(COLUMN_FAMILY);
+        indexedSlicesQuery.setColumnNames(EMAIL_COLUMN, COLUMN_NAME);
+
+        List<Row<UUID, String, ByteBuffer>> results = indexedSlicesQuery.execute().get().getList();
+
+        if(results.size() == 0) {
+            return null;
         }
-        return null;
+
+        return accountCodec.fromJson(StringSerializer.get().fromByteBuffer(results.get(0).getColumnSlice().getColumnByName(COLUMN_NAME).getValue()));
     }
     
     private static Predicate<ColumnFamilyDefinition> named(final String name) {

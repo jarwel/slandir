@@ -11,7 +11,6 @@ import com.proofpoint.discovery.client.DiscoveryBinder;
 import com.proofpoint.node.NodeInfo;
 import com.slandir.account.dao.AccountDao;
 import com.slandir.account.dao.CassandraAccountDao;
-import com.slandir.account.dao.InMemoryAccountDao;
 import com.slandir.account.resource.AccountResource;
 import me.prettyprint.cassandra.service.CassandraHostConfigurator;
 import me.prettyprint.cassandra.service.clock.MillisecondsClockResolution;

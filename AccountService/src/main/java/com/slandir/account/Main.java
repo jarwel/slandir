@@ -5,7 +5,6 @@ import com.proofpoint.bootstrap.Bootstrap;
 import com.proofpoint.cassandra.CassandraModule;
 import com.proofpoint.discovery.client.Announcer;
 import com.proofpoint.discovery.client.DiscoveryModule;
-import com.proofpoint.event.client.HttpEventModule;
 import com.proofpoint.experimental.jmx.JmxHttpModule;
 import com.proofpoint.http.server.HttpServerModule;
 import com.proofpoint.jaxrs.JaxrsModule;

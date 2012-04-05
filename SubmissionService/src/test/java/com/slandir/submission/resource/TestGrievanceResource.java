@@ -2,13 +2,14 @@ package com.slandir.submission.resource;
 
 import com.google.common.collect.Lists;
 import com.slandir.submission.dao.GrievanceDao;
+import com.slandir.submission.dao.InMemoryGrievanceDao;
 import com.slandir.submission.model.Grievance;
+import org.joda.time.DateTime;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import javax.ws.rs.core.Response;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,7 +27,7 @@ public class TestGrievanceResource {
     
     @BeforeMethod
     public void setUp() {
-        mockGrievanceDao = mock(GrievanceDao.class);
+        mockGrievanceDao = mock(InMemoryGrievanceDao.class);
         grievanceResource = new GrievanceResource(mockGrievanceDao);
     }
     
@@ -39,7 +40,7 @@ public class TestGrievanceResource {
     @Test
     public void testGetWithPersonId() {
         UUID personId = UUID.randomUUID();
-        Grievance grievance = new Grievance(UUID.randomUUID(), UUID.randomUUID(), personId, "Anonymous", "Someone did something horrible.", new Date(0));
+        Grievance grievance = new Grievance(UUID.randomUUID(), UUID.randomUUID(), personId, "Anonymous", "Someone did something horrible.", DateTime.now());
 
         List<Grievance> expected = Lists.newArrayList(grievance);
         doReturn(expected).when(mockGrievanceDao).fetchByPerson(personId);
@@ -54,7 +55,7 @@ public class TestGrievanceResource {
     @Test
     public void testGetWithAccountId() {
         UUID accountId = UUID.randomUUID();
-        Grievance grievance = new Grievance(UUID.randomUUID(), accountId, UUID.randomUUID(), "Anonymous", "Someone did something horrible.", new Date(0));
+        Grievance grievance = new Grievance(UUID.randomUUID(), accountId, UUID.randomUUID(), "Anonymous", "Someone did something horrible.", DateTime.now());
 
         List<Grievance> expected = Lists.newArrayList(grievance);
         doReturn(expected).when(mockGrievanceDao).fetchByAccount(accountId);

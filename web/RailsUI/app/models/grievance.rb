@@ -34,7 +34,7 @@ class Grievance
 
   def self.remove(grievanceId)
     response = HTTPClient.new.delete("#{Grievance.service_url}/#{grievanceId}")
-    raise "Error fetching grievances: #{response.body}" if response.status != HTTP::Status::OK
+    raise "Error deleting grievance: #{response.body}" if response.status != HTTP::Status::OK
   end
 
   private

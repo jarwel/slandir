@@ -3,8 +3,8 @@ package com.slandir.submission.model;
 import com.google.common.base.Preconditions;
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonProperty;
+import org.joda.time.DateTime;
 
-import java.util.Date;
 import java.util.UUID;
 
 public class Grievance {
@@ -14,7 +14,7 @@ public class Grievance {
     private final UUID personId;
     private final String author;
     private final String description;
-    private final Date created;
+    private final DateTime created;
 
     @JsonCreator
     public Grievance(
@@ -23,7 +23,7 @@ public class Grievance {
         @JsonProperty("personId") UUID personId,
         @JsonProperty("author") String author,
         @JsonProperty("description") String description,
-        @JsonProperty("created") Date created
+        @JsonProperty("created") DateTime created
     ) {
         this.id = Preconditions.checkNotNull(id);
         this.accountId = Preconditions.checkNotNull(accountId);
@@ -59,7 +59,7 @@ public class Grievance {
     }
 
     @JsonProperty("created")
-    public Date getCreated() {
+    public DateTime getCreated() {
         return created;
     }
 
