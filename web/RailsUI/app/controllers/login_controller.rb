@@ -13,6 +13,9 @@ class LoginController < ApplicationController
     if !account.nil?
       set_current_account(account)
       redirect_to root_path
+    else
+      flash[:error] = "Invalid credentials were provided."
+      redirect_to login_show_path
     end
   end
 

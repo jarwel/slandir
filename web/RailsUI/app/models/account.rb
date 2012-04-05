@@ -25,7 +25,8 @@ class Account
   def self.authenticate(email, password)
     response = HTTPClient.new.get(Account.service_url, { :email => email, :password => password })
     return Account.new(ActiveSupport::JSON.decode(response.body)) if response.status == HTTP::Status::OK
-    raise "Error authenticating account: #{response.body}" if response.status != HTTP::Status::OK
+    return nil if response.status == HTTP::Status::UNAUTHORIZED
+    raise "Error authenticating account: #{response.body}" if response.status != HTTP::Status::OK || response.status != HTTP::Status::UNAUTHORIZED
   end
 
   private

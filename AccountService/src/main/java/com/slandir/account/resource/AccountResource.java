@@ -44,7 +44,7 @@ public class AccountResource {
             e.printStackTrace();
             return Response.serverError().build();
         }
-        return Response.noContent().build();
+        return Response.status(Response.Status.UNAUTHORIZED).build();
     }
     
     @POST

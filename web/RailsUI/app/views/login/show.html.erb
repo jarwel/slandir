@@ -6,33 +6,34 @@
 
   <%= form_tag login_create_path, :id => "signup-form" do %>
     <div class="row">
-      <label class="offset2 error"><%= flash[:error] %></label>
+      <label class="offset6 error"><%= flash[:error] %></label>
     </div>
     <div class="row">
-      <div class="offset2 span2"><h3>Email:</h3></div>
+      <div class="offset6 span2"><h3>Email:</h3></div>
       <div class="offset4"><%= text_field_tag "email", @email, :class => "span3 required email" %></div>
     </div>
     <div class="row">
-      <div class="offset2 span2"><h3>First name:</h3></div>
-      <div class="offset4"><%= text_field_tag "firstName", @firstName, :class => "span3 required" %></div>
+      <div class="offset6 span2"><h3>First name:</h3></div>
+      <div class="offset4"><%= text_field_tag "firstName", @firstName, :class => "span2 required" %></div>
     </div>
     <div class="row">
-      <div class="offset2 span2"><h3>Last name:</h3></div>
-      <div class="offset4"><%= text_field_tag "lastName", @lastName, :class => "span3 required" %></div>
+      <div class="offset6 span2"><h3>Last name:</h3></div>
+      <div class="offset4"><%= text_field_tag "lastName", @lastName, :class => "span2 required" %></div>
     </div>
     <div class="row">
-      <div class="offset2 span2"><h3>Password:</h3></div>
+      <div class="offset6 span2"><h3>Password:</h3></div>
       <div class="offset4"><%= password_field_tag "password", @password, { :class => "span2 required", :minlength => 6 } %></div>
     </div>
     <br>
     <div class="row">
-      <div class="offset2"><h3>Enter the words in the image below</h3></div>
+      <div class="offset6"><h3>Enter the words in the image below</h3></div>
     </div>
     <div class="row">
-      <div class="offset2"><%= recaptcha_tags :display => {:theme => "clean"} %></div>
+      <div class="offset6"><%= recaptcha_tags :display => {:theme => "clean"} %></div>
     </div>
+    <br>
     <div class="row">
-      <div class="offset8"><%= submit_tag "Sign Up", :class => "btn btn-primary btn-large" %></div>
+      <div class="offset10"><%= submit_tag "Sign Up", :class => "btn btn-primary btn-large" %></div>
     </div>
   <% end %>
 
