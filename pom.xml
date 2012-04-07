@@ -7,24 +7,24 @@
     <groupId>Slandir</groupId>
     <artifactId>Slandir</artifactId>
     <packaging>pom</packaging>
-    <version>1.0</version>
+    <version>0.1-SNAPSHOT</version>
     <modules>
+        <module>AccountService</module>
         <module>IdentityService</module>
         <module>SubmissionService</module>
-        <module>AccountService</module>
         <module>web/RailsUI</module>
     </modules>
 
     <distributionManagement>
         <snapshotRepository>
-            <id>sonatype-nexus-snapshots</id>
-            <name>Sonatype Nexus Snapshots</name>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            <id>nexus-snapshots</id>
+            <name>Nexus Snapshots</name>
+            <url>https://blazingspear.com/content/repositories/snapshots</url>
         </snapshotRepository>
         <repository>
-            <id>sonatype-nexus-repository</id>
-            <name>Sonatype Nexus Repository</name>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+            <id>nexus-repository</id>
+            <name>Nexus Repository</name>
+            <url>https://blazingspear.com/content/repositories/releases</url>
         </repository>
     </distributionManagement>
 

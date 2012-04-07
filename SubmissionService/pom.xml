@@ -7,10 +7,11 @@
     <parent>
         <groupId>com.proofpoint.platform</groupId>
         <artifactId>rest-server-base</artifactId>
-        <version>0.54</version>
+        <version>0.58</version>
     </parent>
 
     <artifactId>SubmissionService</artifactId>
+    <version>0.1-SNAPSHOT</version>
 
     <properties>
         <main-class>com.slandir.submission.Main</main-class>
@@ -40,6 +41,12 @@
         <dependency>
             <groupId>com.proofpoint.platform</groupId>
             <artifactId>bootstrap</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.proofpoint.platform</groupId>
+            <artifactId>http-client-experimental</artifactId>
+            <version>0.58</version>
         </dependency>
 
         <dependency>
@@ -105,7 +112,7 @@
         <dependency>
             <groupId>com.proofpoint.platform</groupId>
             <artifactId>cassandra-experimental</artifactId>
-            <version>0.54</version>
+            <version>0.58</version>
         </dependency>
 
         <dependency>

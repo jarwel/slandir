@@ -7,10 +7,11 @@
     <parent>
         <groupId>com.proofpoint.platform</groupId>
         <artifactId>rack-server-base-experimental</artifactId>
-        <version>0.54</version>
+        <version>0.58</version>
     </parent>
 
     <artifactId>RailsUI</artifactId>
+    <version>0.1-SNAPSHOT</version>
 
     <build>
         <plugins>

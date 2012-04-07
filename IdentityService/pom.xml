@@ -7,10 +7,11 @@
     <parent>
         <groupId>com.proofpoint.platform</groupId>
         <artifactId>rest-server-base</artifactId>
-        <version>0.54</version>
+        <version>0.58</version>
     </parent>
 
     <artifactId>IdentityService</artifactId>
+    <version>0.1-SNAPSHOT</version>
 
     <properties>
         <main-class>com.slandir.identity.Main</main-class>
