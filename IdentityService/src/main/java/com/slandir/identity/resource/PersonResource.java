@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import com.slandir.identity.dao.PersonDao;
 import com.slandir.identity.model.Person;
+import com.slandir.identity.util.Simulacrum;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -63,7 +64,8 @@ public class PersonResource {
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     public Response put(Person person) {
-        personDao.update(person);
+        Person original = personDao.get(person.getId());
+        personDao.save(new Simulacrum(original).assimilate(person).toPerson());
         return Response.ok().build();
     }
 }

@@ -7,7 +7,6 @@ import com.google.inject.Inject;
 import com.proofpoint.json.JsonCodec;
 import com.slandir.submission.model.Grievance;
 import me.prettyprint.cassandra.model.BasicColumnDefinition;
-import me.prettyprint.cassandra.model.BasicColumnFamilyDefinition;
 import me.prettyprint.cassandra.model.IndexedSlicesQuery;
 import me.prettyprint.cassandra.model.QuorumAllConsistencyLevelPolicy;
 import me.prettyprint.cassandra.serializers.ByteBufferSerializer;
@@ -19,16 +18,14 @@ import me.prettyprint.cassandra.service.template.ColumnFamilyUpdater;
 import me.prettyprint.cassandra.service.template.ThriftColumnFamilyTemplate;
 import me.prettyprint.hector.api.Cluster;
 import me.prettyprint.hector.api.Keyspace;
-import me.prettyprint.hector.api.beans.ColumnSlice;
 import me.prettyprint.hector.api.beans.Row;
+import me.prettyprint.hector.api.ddl.ColumnDefinition;
 import me.prettyprint.hector.api.ddl.ColumnFamilyDefinition;
 import me.prettyprint.hector.api.ddl.ColumnIndexType;
 import me.prettyprint.hector.api.ddl.ComparatorType;
 import me.prettyprint.hector.api.ddl.KeyspaceDefinition;
 import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.mutation.Mutator;
-import me.prettyprint.hector.api.query.QueryResult;
-import me.prettyprint.hector.api.query.SliceQuery;
 
 import javax.annotation.Nullable;
 import java.nio.ByteBuffer;
@@ -63,26 +60,20 @@ public class CassandraGrievanceDao implements GrievanceDao {
         if(columnFamilyDefinition == null) {
 
             //Create secondary index on account_id
-            BasicColumnDefinition accountIdColumnDefinition = new BasicColumnDefinition();
-            accountIdColumnDefinition.setName(StringSerializer.get().toByteBuffer(ACCOUNT_ID_COLUMN));
-            accountIdColumnDefinition.setIndexName(String.format("%s_idx", ACCOUNT_ID_COLUMN));
-            accountIdColumnDefinition.setIndexType(ColumnIndexType.KEYS);
-            accountIdColumnDefinition.setValidationClass(ComparatorType.UUIDTYPE.getClassName());
+            BasicColumnDefinition accountIdColumn = new BasicColumnDefinition();
+            accountIdColumn.setName(StringSerializer.get().toByteBuffer(ACCOUNT_ID_COLUMN));
+            accountIdColumn.setIndexName(String.format("%s_idx", ACCOUNT_ID_COLUMN));
+            accountIdColumn.setIndexType(ColumnIndexType.KEYS);
+            accountIdColumn.setValidationClass(ComparatorType.UUIDTYPE.getClassName());
 
             //Create secondary index on person_id
-            BasicColumnDefinition personIdColumnDefinition = new BasicColumnDefinition();
-            personIdColumnDefinition.setName(StringSerializer.get().toByteBuffer(PERSON_ID_COLUMN));
-            personIdColumnDefinition.setIndexName(String.format("%s_idx", PERSON_ID_COLUMN));
-            personIdColumnDefinition.setIndexType(ColumnIndexType.KEYS);
-            personIdColumnDefinition.setValidationClass(ComparatorType.UUIDTYPE.getClassName());
+            BasicColumnDefinition personIdColumn = new BasicColumnDefinition();
+            personIdColumn.setName(StringSerializer.get().toByteBuffer(PERSON_ID_COLUMN));
+            personIdColumn.setIndexName(String.format("%s_idx", PERSON_ID_COLUMN));
+            personIdColumn.setIndexType(ColumnIndexType.KEYS);
+            personIdColumn.setValidationClass(ComparatorType.UUIDTYPE.getClassName());
 
-            columnFamilyDefinition = new BasicColumnFamilyDefinition();
-            columnFamilyDefinition.setKeyspaceName(KEY_SPACE);
-            columnFamilyDefinition.setName(COLUMN_FAMILY);
-            columnFamilyDefinition.addColumnDefinition(accountIdColumnDefinition);
-            columnFamilyDefinition.addColumnDefinition(personIdColumnDefinition);
-
-            cluster.addColumnFamily(new ThriftCfDef(columnFamilyDefinition));
+            cluster.addColumnFamily(new ThriftCfDef(KEY_SPACE, COLUMN_FAMILY, ComparatorType.ASCIITYPE, Lists.newArrayList((ColumnDefinition)accountIdColumn, personIdColumn)));
         }
 
         keyspace = HFactory.createKeyspace(KEY_SPACE, cluster);
@@ -111,8 +102,8 @@ public class CassandraGrievanceDao implements GrievanceDao {
     public List<Grievance> fetchByAccount(UUID accountId) {
         IndexedSlicesQuery<UUID, String, ByteBuffer> indexedSlicesQuery = HFactory.createIndexedSlicesQuery(keyspace, UUIDSerializer.get(), StringSerializer.get(), ByteBufferSerializer.get());
         indexedSlicesQuery.addEqualsExpression(ACCOUNT_ID_COLUMN, UUIDSerializer.get().toByteBuffer(accountId));
-        indexedSlicesQuery.setColumnNames(ACCOUNT_ID_COLUMN, COLUMN_NAME);
         indexedSlicesQuery.setColumnFamily(COLUMN_FAMILY);
+        indexedSlicesQuery.setColumnNames(ACCOUNT_ID_COLUMN, COLUMN_NAME);
 
         List<Row<UUID, String, ByteBuffer>> results = indexedSlicesQuery.execute().get().getList();
         return Lists.transform(results, new Function<Row<UUID, String, ByteBuffer>, Grievance>() {
@@ -134,8 +125,9 @@ public class CassandraGrievanceDao implements GrievanceDao {
 
     @Override
     public void remove(UUID grievanceId) {
-        Mutator<UUID> mutator = HFactory.createMutator(keyspace, UUIDSerializer.get());
-        mutator.delete(grievanceId, COLUMN_FAMILY, null, null);
+        HFactory.createMutator(keyspace, UUIDSerializer.get())
+            .addDeletion(grievanceId, COLUMN_FAMILY, System.currentTimeMillis())
+            .execute();
     }
 
     private static Predicate<ColumnFamilyDefinition> named(final String name) {

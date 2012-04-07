@@ -2,6 +2,7 @@ package com.slandir.identity;
 
 import com.google.inject.Injector;
 import com.proofpoint.bootstrap.Bootstrap;
+import com.proofpoint.cassandra.CassandraModule;
 import com.proofpoint.discovery.client.Announcer;
 import com.proofpoint.discovery.client.DiscoveryModule;
 import com.proofpoint.event.client.HttpEventModule;
@@ -31,6 +32,7 @@ public class Main {
             new MBeanModule(),
             new JmxModule(),
             new HttpEventModule(),
+            new CassandraModule(),
             new MainModule()
         );
         

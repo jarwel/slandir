@@ -46,6 +46,12 @@
 
         <dependency>
             <groupId>com.proofpoint.platform</groupId>
+            <artifactId>http-client-experimental</artifactId>
+            <version>0.58</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.proofpoint.platform</groupId>
             <artifactId>discovery-experimental</artifactId>
         </dependency>
 
@@ -102,6 +108,24 @@
         <dependency>
             <groupId>com.proofpoint.platform</groupId>
             <artifactId>experimental</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.proofpoint.platform</groupId>
+            <artifactId>cassandra-experimental</artifactId>
+            <version>0.58</version>
+        </dependency>
+
+        <dependency>
+            <groupId>me.prettyprint</groupId>
+            <artifactId>hector-core</artifactId>
+            <version>0.8.0-2</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-log4j12</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>

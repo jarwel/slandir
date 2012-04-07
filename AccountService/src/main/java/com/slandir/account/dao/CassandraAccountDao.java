@@ -1,11 +1,11 @@
 package com.slandir.account.dao;
 
 import com.google.common.base.Predicate;
+import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import com.proofpoint.json.JsonCodec;
 import com.slandir.account.model.Account;
 import me.prettyprint.cassandra.model.BasicColumnDefinition;
-import me.prettyprint.cassandra.model.BasicColumnFamilyDefinition;
 import me.prettyprint.cassandra.model.IndexedSlicesQuery;
 import me.prettyprint.cassandra.model.QuorumAllConsistencyLevelPolicy;
 import me.prettyprint.cassandra.serializers.ByteBufferSerializer;
@@ -18,6 +18,7 @@ import me.prettyprint.cassandra.service.template.ThriftColumnFamilyTemplate;
 import me.prettyprint.hector.api.Cluster;
 import me.prettyprint.hector.api.Keyspace;
 import me.prettyprint.hector.api.beans.Row;
+import me.prettyprint.hector.api.ddl.ColumnDefinition;
 import me.prettyprint.hector.api.ddl.ColumnFamilyDefinition;
 import me.prettyprint.hector.api.ddl.ColumnIndexType;
 import me.prettyprint.hector.api.ddl.ComparatorType;
@@ -55,18 +56,13 @@ public class CassandraAccountDao implements AccountDao {
         if(columnFamilyDefinition == null) {
 
             //Create secondary index on email
-            BasicColumnDefinition emailColumnDefinition = new BasicColumnDefinition();
-            emailColumnDefinition.setName(StringSerializer.get().toByteBuffer(EMAIL_COLUMN));
-            emailColumnDefinition.setIndexName(String.format("%s_idx", EMAIL_COLUMN));
-            emailColumnDefinition.setIndexType(ColumnIndexType.KEYS);
-            emailColumnDefinition.setValidationClass(ComparatorType.ASCIITYPE.getClassName());
+            BasicColumnDefinition emailColumn = new BasicColumnDefinition();
+            emailColumn.setName(StringSerializer.get().toByteBuffer(EMAIL_COLUMN));
+            emailColumn.setIndexName(String.format("%s_idx", EMAIL_COLUMN));
+            emailColumn.setIndexType(ColumnIndexType.KEYS);
+            emailColumn.setValidationClass(ComparatorType.ASCIITYPE.getClassName());
 
-            columnFamilyDefinition = new BasicColumnFamilyDefinition();
-            columnFamilyDefinition.setKeyspaceName(KEY_SPACE);
-            columnFamilyDefinition.setName(COLUMN_FAMILY);
-            columnFamilyDefinition.addColumnDefinition(emailColumnDefinition);
-
-            cluster.addColumnFamily(new ThriftCfDef(columnFamilyDefinition));
+            cluster.addColumnFamily(new ThriftCfDef(KEY_SPACE, COLUMN_FAMILY, ComparatorType.ASCIITYPE, Lists.newArrayList((ColumnDefinition)emailColumn)));
         }
 
         keyspace = HFactory.createKeyspace(KEY_SPACE, cluster);
