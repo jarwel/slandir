@@ -19,12 +19,16 @@ import me.prettyprint.cassandra.service.template.ColumnFamilyUpdater;
 import me.prettyprint.cassandra.service.template.ThriftColumnFamilyTemplate;
 import me.prettyprint.hector.api.Cluster;
 import me.prettyprint.hector.api.Keyspace;
+import me.prettyprint.hector.api.beans.ColumnSlice;
 import me.prettyprint.hector.api.beans.Row;
 import me.prettyprint.hector.api.ddl.ColumnFamilyDefinition;
 import me.prettyprint.hector.api.ddl.ColumnIndexType;
 import me.prettyprint.hector.api.ddl.ComparatorType;
 import me.prettyprint.hector.api.ddl.KeyspaceDefinition;
 import me.prettyprint.hector.api.factory.HFactory;
+import me.prettyprint.hector.api.mutation.Mutator;
+import me.prettyprint.hector.api.query.QueryResult;
+import me.prettyprint.hector.api.query.SliceQuery;
 
 import javax.annotation.Nullable;
 import java.nio.ByteBuffer;
@@ -130,7 +134,8 @@ public class CassandraGrievanceDao implements GrievanceDao {
 
     @Override
     public void remove(UUID grievanceId) {
-        template.deleteRow(grievanceId);
+        Mutator<UUID> mutator = HFactory.createMutator(keyspace, UUIDSerializer.get());
+        mutator.delete(grievanceId, COLUMN_FAMILY, null, null);
     }
 
     private static Predicate<ColumnFamilyDefinition> named(final String name) {
