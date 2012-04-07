@@ -7,12 +7,10 @@
     <parent>
         <groupId>com.proofpoint.platform</groupId>
         <artifactId>rest-server-base</artifactId>
-        <version>0.58</version>
+        <version>0.54</version>
     </parent>
 
-    <groupId>com.slandir</groupId>
     <artifactId>IdentityService</artifactId>
-    <version>0.1-SNAPSHOT</version>
 
     <properties>
         <main-class>com.slandir.identity.Main</main-class>
@@ -137,18 +135,5 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
-    <distributionManagement>
-        <snapshotRepository>
-            <id>nexus-snapshots</id>
-            <name>Nexus Snapshots</name>
-            <url>http://blazingspear.com:8081/nexus/content/repositories/snapshots</url>
-        </snapshotRepository>
-        <repository>
-            <id>nexus-releases</id>
-            <name>Nexus Releases</name>
-            <url>http://blazingspear.com:8081/nexus/content/repositories/releases</url>
-        </repository>
-    </distributionManagement>
 
 </project>

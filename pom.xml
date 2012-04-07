@@ -4,27 +4,27 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.slandir</groupId>
+    <groupId>Slandir</groupId>
     <artifactId>Slandir</artifactId>
     <packaging>pom</packaging>
-    <version>0.1-SNAPSHOT</version>
+    <version>1.0</version>
     <modules>
-        <module>AccountService</module>
         <module>IdentityService</module>
         <module>SubmissionService</module>
+        <module>AccountService</module>
         <module>web/RailsUI</module>
     </modules>
 
     <distributionManagement>
         <snapshotRepository>
-            <id>nexus-snapshots</id>
-            <name>Nexus Snapshots</name>
-            <url>http://blazingspear.com:8081/nexus/content/repositories/snapshots</url>
+            <id>sonatype-nexus-snapshots</id>
+            <name>Sonatype Nexus Snapshots</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
         <repository>
-            <id>nexus-releases</id>
-            <name>Nexus Releases</name>
-            <url>http://blazingspear.com:8081/nexus/content/repositories/releases</url>
+            <id>sonatype-nexus-repository</id>
+            <name>Sonatype Nexus Repository</name>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
         </repository>
     </distributionManagement>
 

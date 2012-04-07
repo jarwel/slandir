@@ -5,11 +5,13 @@ import com.proofpoint.bootstrap.Bootstrap;
 import com.proofpoint.cassandra.CassandraModule;
 import com.proofpoint.discovery.client.Announcer;
 import com.proofpoint.discovery.client.DiscoveryModule;
-import com.proofpoint.event.client.HttpEventModule;
+import com.proofpoint.experimental.jmx.JmxHttpModule;
 import com.proofpoint.http.server.HttpServerModule;
 import com.proofpoint.jaxrs.JaxrsModule;
 import com.proofpoint.jmx.JmxModule;
+import com.proofpoint.jmx.http.rpc.JmxHttpRpcModule;
 import com.proofpoint.json.JsonModule;
+import com.proofpoint.log.LogJmxModule;
 import com.proofpoint.log.Logger;
 import com.proofpoint.node.NodeModule;
 import org.weakref.jmx.guice.MBeanModule;
@@ -27,7 +29,9 @@ public class Main {
             new JaxrsModule(),
             new MBeanModule(),
             new JmxModule(),
-            new HttpEventModule(),
+            new JmxHttpModule(),
+            new JmxHttpRpcModule(),
+            new LogJmxModule(),
             new CassandraModule(),
             new MainModule()
         );
