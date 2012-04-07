@@ -4,7 +4,9 @@ import com.google.inject.Injector;
 import com.proofpoint.bootstrap.Bootstrap;
 import com.proofpoint.discovery.client.Announcer;
 import com.proofpoint.discovery.client.DiscoveryModule;
+import com.proofpoint.event.client.HttpEventModule;
 import com.proofpoint.experimental.jmx.JmxHttpModule;
+import com.proofpoint.http.client.HttpClientModule;
 import com.proofpoint.http.server.HttpServerModule;
 import com.proofpoint.jaxrs.JaxrsModule;
 import com.proofpoint.jmx.JmxModule;
@@ -28,9 +30,7 @@ public class Main {
             new JaxrsModule(),
             new MBeanModule(),
             new JmxModule(),
-            new JmxHttpModule(),
-            new JmxHttpRpcModule(),
-            new LogJmxModule(),
+            new HttpEventModule(),
             new MainModule()
         );
         
