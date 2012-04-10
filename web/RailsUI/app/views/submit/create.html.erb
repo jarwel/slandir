@@ -12,7 +12,7 @@
         <div class="row">
           <div class="span8">
             <h3>
-              <%= radio_button_tag "author", format_last_initial(current_account.firstName, current_account.lastName) %>
+              <%= radio_button_tag "author", format_last_initial(current_account.firstName, current_account.lastName), :checked => "checked"  %>
               <%= format_last_initial(current_account.firstName, current_account.lastName) %>
             </h3>
           </div>

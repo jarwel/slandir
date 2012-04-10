@@ -3,8 +3,11 @@
     <h1>Slandir</h1>
     <p>A better way to handle a dispute.</p>
   </div>
-
   <%= form_tag login_create_path, :id => "signup-form" do %>
+    <div class="row">
+      <h2 class="offset6">Sign Up</h2>
+    </div>
+    <hr>
     <div class="row">
       <label class="offset6 error"><%= flash[:error] %></label>
     </div>
