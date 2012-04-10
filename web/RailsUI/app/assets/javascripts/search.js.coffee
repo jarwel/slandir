@@ -7,3 +7,8 @@ $ ->
     if ($(this).attr("href").toLowerCase() == location.pathname.toLowerCase())
       $(this).parent("li").addClass("active")
 
+$("#search-form").ready ->
+  $("#search-form").validate(
+     errorPlacement: (error, element) ->
+       error.insertBefore(element);
+  )

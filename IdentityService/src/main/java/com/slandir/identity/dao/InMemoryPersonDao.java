@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.slandir.identity.model.Person;
-import com.slandir.identity.util.Simulacrum;
+import com.slandir.identity.type.State;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.Collections;
@@ -18,6 +18,7 @@ public class InMemoryPersonDao implements PersonDao {
 
     private final Map<UUID, Person> persons = Maps.newHashMap();
     private final Map<String, Set<Person>> nameIndex = Maps.newHashMap();
+    private final Map<State, Set<Person>> stateIndex = Maps.newHashMap();
     
     @Override
     public Person get(UUID id) {
@@ -25,7 +26,7 @@ public class InMemoryPersonDao implements PersonDao {
     }
     
     @Override
-    public List<Person> fetch(String firstName, String middleName, String lastName) {
+    public List<Person> fetch(String firstName, String middleName, String lastName, State state) {
 
         List<Set<Person>> sets = Lists.newArrayList();
         if(StringUtils.isNotBlank(firstName)) {
@@ -36,6 +37,9 @@ public class InMemoryPersonDao implements PersonDao {
         }
         if(StringUtils.isNotBlank(lastName)) {
             sets.add(nameIndex.get(lastName.toLowerCase()));
+        }
+        if(state != null) {
+            sets.add(stateIndex.get(state));
         }
 
         if(sets.isEmpty()) {
@@ -79,6 +83,13 @@ public class InMemoryPersonDao implements PersonDao {
                 nameIndex.put(person.getLastName().toLowerCase(), new HashSet<Person>());
             }
             nameIndex.get(person.getLastName().toLowerCase()).add(person);
+        }
+
+        if(person.getAddress() != null && person.getAddress().getState() != null) {
+            if(stateIndex.get(State.valueOf(person.getAddress().getState())) == null) {
+                stateIndex.put(State.valueOf(person.getAddress().getState()), new HashSet<Person>());
+            }
+            stateIndex.get(State.valueOf(person.getAddress().getState())).add(person);
         }
     }
 

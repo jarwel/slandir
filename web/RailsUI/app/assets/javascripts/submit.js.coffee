@@ -6,4 +6,10 @@ $("#person-form").ready ->
   $("#person-form").validate()
 
 $("#grievance-form").ready ->
-  $("#grievance-form").validate()
+  $("#grievance-form").validate(
+    errorPlacement: (error, element) ->
+      if element.attr("id") is "description"
+        error.insertBefore(element)
+      else
+        error.insertAfter(element)
+  )

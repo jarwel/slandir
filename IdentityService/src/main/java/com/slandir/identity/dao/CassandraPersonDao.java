@@ -6,6 +6,7 @@ import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import com.proofpoint.json.JsonCodec;
 import com.slandir.identity.model.Person;
+import com.slandir.identity.type.State;
 import me.prettyprint.cassandra.model.BasicColumnDefinition;
 import me.prettyprint.cassandra.model.IndexedSlicesQuery;
 import me.prettyprint.cassandra.model.QuorumAllConsistencyLevelPolicy;
@@ -46,6 +47,7 @@ public class CassandraPersonDao implements  PersonDao {
     private static final String FIRST_NAME_COLUMN = "first_name";
     private static final String MIDDLE_NAME_COLUMN = "middle_name";
     private static final String LAST_NAME_COLUMN = "last_name";
+    private static final String STATE_COLUMN = "state";
 
     private static final JsonCodec<Person> personCodec = JsonCodec.jsonCodec(Person.class);
 
@@ -104,7 +106,7 @@ public class CassandraPersonDao implements  PersonDao {
     }
 
     @Override
-    public List<Person> fetch(String firstName, String middleName, String lastName) {
+    public List<Person> fetch(String firstName, String middleName, String lastName, State state) {
         IndexedSlicesQuery<UUID, String, ByteBuffer> indexedSlicesQuery = HFactory.createIndexedSlicesQuery(keyspace, UUIDSerializer.get(), StringSerializer.get(), ByteBufferSerializer.get());
         if(!StringUtils.isBlank(firstName)) {
             indexedSlicesQuery.addEqualsExpression(FIRST_NAME_COLUMN, StringSerializer.get().toByteBuffer(firstName.toLowerCase()));
@@ -114,6 +116,9 @@ public class CassandraPersonDao implements  PersonDao {
         }
         if(!StringUtils.isBlank(lastName)) {
             indexedSlicesQuery.addEqualsExpression(LAST_NAME_COLUMN, StringSerializer.get().toByteBuffer(lastName.toLowerCase()));
+        }
+        if(state != null) {
+            indexedSlicesQuery.addEqualsExpression(STATE_COLUMN, StringSerializer.get().toByteBuffer(state.toString()));
         }
         indexedSlicesQuery.setColumnFamily(COLUMN_FAMILY);
         indexedSlicesQuery.setColumnNames(FIRST_NAME_COLUMN, MIDDLE_NAME_COLUMN, LAST_NAME_COLUMN, COLUMN_NAME);
@@ -138,6 +143,9 @@ public class CassandraPersonDao implements  PersonDao {
         }
         if(!StringUtils.isBlank(person.getLastName())) {
             columnFamilyUpdater.setString(LAST_NAME_COLUMN, person.getLastName().toLowerCase());
+        }
+        if(person.getAddress() != null && person.getAddress().getState() != null) {
+            columnFamilyUpdater.setString(STATE_COLUMN, person.getAddress().getState());
         }
         columnFamilyUpdater.setString(COLUMN_NAME, personCodec.toJson(person));
         template.update(columnFamilyUpdater);

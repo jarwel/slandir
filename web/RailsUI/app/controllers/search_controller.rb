@@ -11,10 +11,9 @@ class SearchController < ApplicationController
   def index
     @first_name = params[:first_name]
     @last_name = params[:last_name]
-    @birth_date = params[:birth_date]
-    @phone = params[:phone]
+    @state = params[:state]
 
-    @persons = Person.search(@first_name, @last_name, @birth_date, @phone)
+    @persons = Person.search(@first_name, @last_name, @state)
   end
 
 end

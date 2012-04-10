@@ -5,7 +5,9 @@ import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import com.slandir.identity.dao.PersonDao;
 import com.slandir.identity.model.Person;
+import com.slandir.identity.type.State;
 import com.slandir.identity.util.Simulacrum;
+import org.apache.commons.lang.StringUtils;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -48,9 +50,12 @@ public class PersonResource {
     public Response get(
         @QueryParam("firstName") String firstName,
         @QueryParam("middleName") String middleName,
-        @QueryParam("lastName") String lastName
+        @QueryParam("lastName") String lastName,
+        @QueryParam("state") String state
     ) {
-        List<Person> persons = Lists.newArrayList(personDao.fetch(firstName, middleName, lastName));
+        
+        State stateType = !StringUtils.isBlank(state) ? State.valueOf(state.toUpperCase()) : null;
+        List<Person> persons = Lists.newArrayList(personDao.fetch(firstName, middleName, lastName, stateType));
         return Response.ok(persons).build();
     }
 

@@ -46,12 +46,11 @@ class Person
     raise "Error fetching person: #{response.body}" if response.status != HTTP::Status::OK
   end
 
-  def self.search(first_name, last_name, birth_date, phone)
+  def self.search(first_name, last_name, state)
     query = {
       :firstName => first_name,
       :lastName => last_name,
-      :birthDate => birth_date,
-      :phone => phone
+      :state => state
     }
     response = HTTPClient.new.get(Person.service_url, query)
     return ActiveSupport::JSON.decode(response.body).map { |props| Person.new(props) } if response.status == HTTP::Status::OK

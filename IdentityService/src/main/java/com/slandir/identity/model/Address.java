@@ -1,5 +1,6 @@
 package com.slandir.identity.model;
 
+import com.slandir.identity.type.State;
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonProperty;
 
@@ -7,7 +8,7 @@ public class Address {
     
     private final String street;
     private final String city;
-    private final String state;
+    private final State state;
     private final Integer zip;
 
     @JsonCreator
@@ -19,7 +20,7 @@ public class Address {
     ) {
         this.street = street;
         this.city = city;
-        this.state = state;
+        this.state = state != null ? State.valueOf(state) : null;
         this.zip = zip;
     }
 
@@ -35,7 +36,7 @@ public class Address {
 
     @JsonProperty("state")
     public String getState() {
-        return state;
+        return state.toString();
     }
 
     @JsonProperty("zip")
