@@ -84,7 +84,7 @@ public class CassandraAccountDao implements AccountDao {
         IndexedSlicesQuery<UUID, String, ByteBuffer> indexedSlicesQuery = HFactory.createIndexedSlicesQuery(keyspace, UUIDSerializer.get(), StringSerializer.get(), ByteBufferSerializer.get());
         indexedSlicesQuery.addEqualsExpression(EMAIL_COLUMN, StringSerializer.get().toByteBuffer(email));
         indexedSlicesQuery.setColumnFamily(COLUMN_FAMILY);
-        indexedSlicesQuery.setColumnNames(EMAIL_COLUMN, COLUMN_NAME);
+        indexedSlicesQuery.setColumnNames(COLUMN_NAME);
 
         List<Row<UUID, String, ByteBuffer>> results = indexedSlicesQuery.execute().get().getList();
 

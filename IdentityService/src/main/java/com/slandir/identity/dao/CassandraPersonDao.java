@@ -33,6 +33,7 @@ import org.apache.commons.lang.StringUtils;
 
 import javax.annotation.Nullable;
 import java.nio.ByteBuffer;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -121,9 +122,14 @@ public class CassandraPersonDao implements  PersonDao {
             indexedSlicesQuery.addEqualsExpression(STATE_COLUMN, StringSerializer.get().toByteBuffer(state.toString()));
         }
         indexedSlicesQuery.setColumnFamily(COLUMN_FAMILY);
-        indexedSlicesQuery.setColumnNames(FIRST_NAME_COLUMN, MIDDLE_NAME_COLUMN, LAST_NAME_COLUMN, COLUMN_NAME);
+        indexedSlicesQuery.setColumnNames(COLUMN_NAME);
 
         List<Row<UUID, String, ByteBuffer>> results = indexedSlicesQuery.execute().get().getList();
+        
+        if(results.isEmpty()) {
+            return Collections.emptyList();
+        }
+        
         return Lists.transform(results, new Function<Row<UUID, String, ByteBuffer>, Person>() {
             @Override
             public Person apply(@Nullable Row<UUID, String, ByteBuffer> row) {

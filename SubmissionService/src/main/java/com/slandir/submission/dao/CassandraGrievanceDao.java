@@ -25,10 +25,10 @@ import me.prettyprint.hector.api.ddl.ColumnIndexType;
 import me.prettyprint.hector.api.ddl.ComparatorType;
 import me.prettyprint.hector.api.ddl.KeyspaceDefinition;
 import me.prettyprint.hector.api.factory.HFactory;
-import me.prettyprint.hector.api.mutation.Mutator;
 
 import javax.annotation.Nullable;
 import java.nio.ByteBuffer;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -87,7 +87,7 @@ public class CassandraGrievanceDao implements GrievanceDao {
         IndexedSlicesQuery<UUID, String, ByteBuffer> indexedSlicesQuery = HFactory.createIndexedSlicesQuery(keyspace, UUIDSerializer.get(), StringSerializer.get(), ByteBufferSerializer.get());
         indexedSlicesQuery.addEqualsExpression(PERSON_ID_COLUMN, UUIDSerializer.get().toByteBuffer(personId));
         indexedSlicesQuery.setColumnFamily(COLUMN_FAMILY);
-        indexedSlicesQuery.setColumnNames(PERSON_ID_COLUMN, COLUMN_NAME);
+        indexedSlicesQuery.setColumnNames(COLUMN_NAME);
 
         List<Row<UUID, String, ByteBuffer>> results = indexedSlicesQuery.execute().get().getList();
         return Lists.transform(results, new Function<Row<UUID, String, ByteBuffer>, Grievance>() {
@@ -103,9 +103,14 @@ public class CassandraGrievanceDao implements GrievanceDao {
         IndexedSlicesQuery<UUID, String, ByteBuffer> indexedSlicesQuery = HFactory.createIndexedSlicesQuery(keyspace, UUIDSerializer.get(), StringSerializer.get(), ByteBufferSerializer.get());
         indexedSlicesQuery.addEqualsExpression(ACCOUNT_ID_COLUMN, UUIDSerializer.get().toByteBuffer(accountId));
         indexedSlicesQuery.setColumnFamily(COLUMN_FAMILY);
-        indexedSlicesQuery.setColumnNames(ACCOUNT_ID_COLUMN, COLUMN_NAME);
+        indexedSlicesQuery.setColumnNames(COLUMN_NAME);
 
         List<Row<UUID, String, ByteBuffer>> results = indexedSlicesQuery.execute().get().getList();
+        
+        if(results.isEmpty()) {
+            return Collections.emptyList();
+        }
+        
         return Lists.transform(results, new Function<Row<UUID, String, ByteBuffer>, Grievance>() {
             @Override
             public Grievance apply(@Nullable Row<UUID, String, ByteBuffer> row) {
