@@ -12,7 +12,7 @@
         <module>AccountService</module>
         <module>IdentityService</module>
         <module>SubmissionService</module>
-        <module>web/RailsUI</module>
+        <module>SlandirWeb</module>
     </modules>
 
     <distributionManagement>

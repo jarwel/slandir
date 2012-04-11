@@ -1,4 +1,4 @@
-RailsUI::Application.routes.draw do
+SlandirWeb::Application.routes.draw do
 
   get "login/show"
   post "login/create"

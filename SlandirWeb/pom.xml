@@ -11,7 +11,7 @@
     </parent>
 
     <groupId>com.slandir</groupId>
-    <artifactId>RailsUI</artifactId>
+    <artifactId>SlandirWeb</artifactId>
     <version>0.1-SNAPSHOT</version>
 
     <build>
