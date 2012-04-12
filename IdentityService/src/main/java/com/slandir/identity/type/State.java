@@ -50,5 +50,5 @@ public enum State {
     WA,
     WV,
     WI,
-    WY;
+    WY
 }

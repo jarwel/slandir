@@ -5,38 +5,38 @@
   </div>
   <%= form_tag login_create_path, :id => "signup-form" do %>
     <div class="row">
-      <h2 class="offset6">Sign Up</h2>
+      <h2 class="offset5">Sign Up</h2>
     </div>
     <hr>
     <div class="row">
-      <label class="offset6 error"><%= flash[:error] %></label>
+      <label class="offset5 error"><%= flash[:error] %></label>
     </div>
     <div class="row">
-      <div class="offset6 span2"><h3>Email:</h3></div>
-      <div class="offset4"><%= text_field_tag "email", @email, :class => "span3 required email" %></div>
+      <div class="offset5 span2"><h3>Email:</h3></div>
+      <%= text_field_tag "email", @email, :class => "span2 required email" %>
     </div>
     <div class="row">
-      <div class="offset6 span2"><h3>First name:</h3></div>
-      <div class="offset4"><%= text_field_tag "firstName", @firstName, :class => "span2 required" %></div>
+      <div class="offset5 span2"><h3>First name:</h3></div>
+      <%= text_field_tag "firstName", @firstName, :class => "span2 required" %>
     </div>
     <div class="row">
-      <div class="offset6 span2"><h3>Last name:</h3></div>
-      <div class="offset4"><%= text_field_tag "lastName", @lastName, :class => "span2 required" %></div>
+      <div class="offset5 span2"><h3>Last name:</h3></div>
+      <%= text_field_tag "lastName", @lastName, :class => "span2 required" %>
     </div>
     <div class="row">
-      <div class="offset6 span2"><h3>Password:</h3></div>
-      <div class="offset4"><%= password_field_tag "password", @password, { :class => "span2 required", :minlength => 6 } %></div>
-    </div>
-    <br>
-    <div class="row">
-      <div class="offset6"><h3>Enter the words in the image below</h3></div>
-    </div>
-    <div class="row">
-      <div class="offset6"><%= recaptcha_tags :display => {:theme => "clean"} %></div>
+      <div class="offset5 span2"><h3>Password:</h3></div>
+      <%= password_field_tag "password", @password, { :class => "span2 required", :minlength => 6 } %>
     </div>
     <br>
     <div class="row">
-      <div class="offset10"><%= submit_tag "Sign Up", :class => "btn btn-primary btn-large" %></div>
+      <div class="offset5"><h3>Enter the words in the image below</h3></div>
+    </div>
+    <div class="row">
+      <div class="offset5"><%= recaptcha_tags :display => {:theme => "clean"} %></div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="offset9"><%= submit_tag "Sign Up", :class => "btn btn-primary btn-large" %></div>
     </div>
   <% end %>
 
