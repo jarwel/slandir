@@ -29,20 +29,23 @@ class SubmitController < ApplicationController
       }
     })
 
-    session[:person_info] = new_person
+    flash[:person_info] = new_person
     @persons = Person.match(new_person)
   end
 
   def create
     personId = params[:personId]
+    person = flash[:person_info]\
+
     if !personId.nil?
-      session[:person_info].id = personId
+      person.id = personId
+      flash[:person_info] = person
     end
     @redirect_url = params[:redirect_url]
   end
 
   def show
-    person_info = session[:person_info]
+    person_info = flash[:person_info]
 
     if person_info.id.nil?
       person_info.save
