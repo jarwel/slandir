@@ -35,7 +35,7 @@ public class CassandraAccountDao implements AccountDao {
 
     private static final String KEY_SPACE = "account";
     private static final String COLUMN_FAMILY = "account";
-    private static final String COLUMN_NAME = "data";
+    private static final String COLUMN_NAME = "representation";
 
     private static final String EMAIL_COLUMN = "email";
     

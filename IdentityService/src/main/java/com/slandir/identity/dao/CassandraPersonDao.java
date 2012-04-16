@@ -43,7 +43,7 @@ public class CassandraPersonDao implements  PersonDao {
 
     private static final String KEY_SPACE = "identity";
     private static final String COLUMN_FAMILY = "person";
-    private static final String COLUMN_NAME = "data";
+    private static final String COLUMN_NAME = "representation";
 
     private static final String FIRST_NAME_COLUMN = "first_name";
     private static final String MIDDLE_NAME_COLUMN = "middle_name";

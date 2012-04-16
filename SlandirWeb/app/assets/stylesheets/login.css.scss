@@ -16,7 +16,8 @@ body {
 }
 
 label.error {
-  display: inline;
+  width: 150px;
+  display: inline-block;
   padding-left: 6px;
   color: red;
 }

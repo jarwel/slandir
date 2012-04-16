@@ -25,6 +25,7 @@ import me.prettyprint.hector.api.ddl.ColumnIndexType;
 import me.prettyprint.hector.api.ddl.ComparatorType;
 import me.prettyprint.hector.api.ddl.KeyspaceDefinition;
 import me.prettyprint.hector.api.factory.HFactory;
+import me.prettyprint.hector.api.mutation.Mutator;
 
 import javax.annotation.Nullable;
 import java.nio.ByteBuffer;
@@ -38,7 +39,7 @@ public class CassandraGrievanceDao implements GrievanceDao {
 
     private static final String KEY_SPACE = "submission";
     private static final String COLUMN_FAMILY = "grievance";
-    private static final String COLUMN_NAME = "data";
+    private static final String COLUMN_NAME = "representation";
 
     private static final String ACCOUNT_ID_COLUMN = "account_id";
     private static final String PERSON_ID_COLUMN = "person_id";
@@ -130,9 +131,8 @@ public class CassandraGrievanceDao implements GrievanceDao {
 
     @Override
     public void remove(UUID grievanceId) {
-        HFactory.createMutator(keyspace, UUIDSerializer.get())
-            .addDeletion(grievanceId, COLUMN_FAMILY)
-            .execute();
+        Mutator<UUID> mutator = HFactory.createMutator(keyspace, UUIDSerializer.get());
+        mutator.delete(grievanceId, template.getColumnFamily(), null, null);
     }
 
     private static Predicate<ColumnFamilyDefinition> named(final String name) {
