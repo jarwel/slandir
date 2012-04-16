@@ -131,7 +131,7 @@ public class CassandraGrievanceDao implements GrievanceDao {
     @Override
     public void remove(UUID grievanceId) {
         HFactory.createMutator(keyspace, UUIDSerializer.get())
-            .addDeletion(grievanceId, COLUMN_FAMILY, System.currentTimeMillis())
+            .addDeletion(grievanceId, COLUMN_FAMILY)
             .execute();
     }
 

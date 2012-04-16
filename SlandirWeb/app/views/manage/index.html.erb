@@ -5,11 +5,17 @@
   </div>
   <% @grievances.each do |grievance| %>
     <div class="row">
-      <div class="span1 offset1"><%= link_to "Remove", manage_destroy_path(:grievanceId => grievance.id), :class => "btn", :method => :delete %></div>
-      <div class="span5"><h3>Posted as <%= grievance.author %> in <%= grievance.created.strftime("%B %Y") %></h3></div>
+      <div class="span2"><%= image_tag "default.jpg", :class => "person-image-small" %></div>
+      <div class="span10">
+        <div class="row">
+          <div class="span7"><h3>Posted as <%= grievance.author %> in <%= grievance.created.strftime("%B %Y") %></h3></div>
+          <div class="span2 pull-right"><%= link_to "Remove", manage_destroy_path(:grievanceId => grievance.id), :class => "btn", :method => :delete %></div>
+        </div>
+        <div class="row">
+          <div class="span9 well"><%= grievance.description %></div>
+        </div>
+      </div>
     </div>
-    <div class="row">
-      <div class="span10 offset1 well"><%= grievance.description %></div>
-    </div>
+    <% if grievance != @grievances.last %> <br> <% end %>
   <% end %>
 </div>
