@@ -6,4 +6,6 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require jquery.validate.min
+//= require bootstrap.min
 //= require_tree .
