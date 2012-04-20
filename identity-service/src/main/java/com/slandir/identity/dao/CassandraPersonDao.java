@@ -32,6 +32,7 @@ import me.prettyprint.hector.api.query.SliceQuery;
 import org.apache.commons.lang.StringUtils;
 
 import javax.annotation.Nullable;
+import javax.annotation.PreDestroy;
 import java.nio.ByteBuffer;
 import java.util.Collections;
 import java.util.List;
@@ -52,6 +53,7 @@ public class CassandraPersonDao implements  PersonDao {
 
     private static final JsonCodec<Person> personCodec = JsonCodec.jsonCodec(Person.class);
 
+    private final Cluster cluster;
     private final Keyspace keyspace;
     private final ThriftColumnFamilyTemplate<UUID, String> template;
 
@@ -90,10 +92,17 @@ public class CassandraPersonDao implements  PersonDao {
             cluster.addColumnFamily(new ThriftCfDef(KEY_SPACE, COLUMN_FAMILY, ComparatorType.ASCIITYPE, Lists.newArrayList((ColumnDefinition)firstNameColumn, middleNameColumn, lastNameColumn)));
         }
 
+        this.cluster = cluster;
+
         keyspace = HFactory.createKeyspace(KEY_SPACE, cluster);
         keyspace.setConsistencyLevelPolicy(new QuorumAllConsistencyLevelPolicy());
 
         template = new ThriftColumnFamilyTemplate<UUID, String>(keyspace, COLUMN_FAMILY, UUIDSerializer.get(), StringSerializer.get());
+    }
+
+    @PreDestroy
+    public void preDestroy() {
+        HFactory.shutdownCluster(cluster);
     }
 
     @Override

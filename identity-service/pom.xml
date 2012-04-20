@@ -35,8 +35,9 @@
         </dependency>
 
         <dependency>
-            <groupId>com.google.inject.extensions</groupId>
-            <artifactId>guice-multibindings</artifactId>
+            <groupId>com.proofpoint.platform</groupId>
+            <artifactId>http-client-experimental</artifactId>
+            <version>0.58</version>
         </dependency>
 
         <dependency>
@@ -46,8 +47,7 @@
 
         <dependency>
             <groupId>com.proofpoint.platform</groupId>
-            <artifactId>http-client-experimental</artifactId>
-            <version>0.58</version>
+            <artifactId>node</artifactId>
         </dependency>
 
         <dependency>
@@ -72,7 +72,7 @@
 
         <dependency>
             <groupId>com.proofpoint.platform</groupId>
-            <artifactId>trace-token</artifactId>
+            <artifactId>json</artifactId>
         </dependency>
 
         <dependency>
@@ -87,12 +87,8 @@
 
         <dependency>
             <groupId>com.proofpoint.platform</groupId>
-            <artifactId>jmx-http-rpc-experimental</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.proofpoint.platform</groupId>
-            <artifactId>units</artifactId>
+            <artifactId>cassandra-experimental</artifactId>
+            <version>0.58</version>
         </dependency>
 
         <dependency>
@@ -103,17 +99,6 @@
         <dependency>
             <groupId>org.codehaus.jackson</groupId>
             <artifactId>jackson-core-asl</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.proofpoint.platform</groupId>
-            <artifactId>experimental</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.proofpoint.platform</groupId>
-            <artifactId>cassandra-experimental</artifactId>
-            <version>0.58</version>
         </dependency>
 
         <dependency>
@@ -131,6 +116,11 @@
         <dependency>
             <groupId>com.ning</groupId>
             <artifactId>async-http-client</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
         </dependency>
 
         <!-- for packaging -->

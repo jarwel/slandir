@@ -5,6 +5,7 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import com.proofpoint.json.JsonCodec;
+import com.proofpoint.log.Logger;
 import com.slandir.submission.model.Grievance;
 import me.prettyprint.cassandra.model.BasicColumnDefinition;
 import me.prettyprint.cassandra.model.IndexedSlicesQuery;
@@ -24,10 +25,12 @@ import me.prettyprint.hector.api.ddl.ColumnFamilyDefinition;
 import me.prettyprint.hector.api.ddl.ColumnIndexType;
 import me.prettyprint.hector.api.ddl.ComparatorType;
 import me.prettyprint.hector.api.ddl.KeyspaceDefinition;
+import me.prettyprint.hector.api.exceptions.HectorException;
 import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.mutation.Mutator;
 
 import javax.annotation.Nullable;
+import javax.annotation.PreDestroy;
 import java.nio.ByteBuffer;
 import java.util.Collections;
 import java.util.List;
@@ -45,7 +48,8 @@ public class CassandraGrievanceDao implements GrievanceDao {
     private static final String PERSON_ID_COLUMN = "person_id";
 
     private static final JsonCodec<Grievance> grievanceCodec = JsonCodec.jsonCodec(Grievance.class);
-    
+
+    private final Cluster cluster;
     private final Keyspace keyspace;
     private final ThriftColumnFamilyTemplate<UUID, String> template;
 
@@ -77,10 +81,17 @@ public class CassandraGrievanceDao implements GrievanceDao {
             cluster.addColumnFamily(new ThriftCfDef(KEY_SPACE, COLUMN_FAMILY, ComparatorType.ASCIITYPE, Lists.newArrayList((ColumnDefinition)accountIdColumn, personIdColumn)));
         }
 
+        this.cluster = cluster;
+
         keyspace = HFactory.createKeyspace(KEY_SPACE, cluster);
         keyspace.setConsistencyLevelPolicy(new QuorumAllConsistencyLevelPolicy());
         
         template = new ThriftColumnFamilyTemplate<UUID, String>(keyspace, COLUMN_FAMILY, UUIDSerializer.get(), StringSerializer.get());
+    }
+
+    @PreDestroy
+    public void preDestroy() {
+        HFactory.shutdownCluster(cluster);
     }
 
     @Override
@@ -132,7 +143,8 @@ public class CassandraGrievanceDao implements GrievanceDao {
     @Override
     public void remove(UUID grievanceId) {
         Mutator<UUID> mutator = HFactory.createMutator(keyspace, UUIDSerializer.get());
-        mutator.delete(grievanceId, template.getColumnFamily(), null, null);
+        mutator.addDeletion(grievanceId, COLUMN_FAMILY);
+        mutator.execute();
     }
 
     private static Predicate<ColumnFamilyDefinition> named(final String name) {

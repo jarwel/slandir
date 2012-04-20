@@ -25,6 +25,7 @@ import me.prettyprint.hector.api.ddl.ComparatorType;
 import me.prettyprint.hector.api.ddl.KeyspaceDefinition;
 import me.prettyprint.hector.api.factory.HFactory;
 
+import javax.annotation.PreDestroy;
 import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.UUID;
@@ -41,6 +42,7 @@ public class CassandraAccountDao implements AccountDao {
     
     private static final JsonCodec<Account> accountCodec = JsonCodec.jsonCodec(Account.class);
 
+    private final Cluster cluster;
     private final Keyspace keyspace;
     private final ThriftColumnFamilyTemplate<UUID, String> template;
 
@@ -65,10 +67,17 @@ public class CassandraAccountDao implements AccountDao {
             cluster.addColumnFamily(new ThriftCfDef(KEY_SPACE, COLUMN_FAMILY, ComparatorType.ASCIITYPE, Lists.newArrayList((ColumnDefinition)emailColumn)));
         }
 
+        this.cluster = cluster;
+
         keyspace = HFactory.createKeyspace(KEY_SPACE, cluster);
         keyspace.setConsistencyLevelPolicy(new QuorumAllConsistencyLevelPolicy());
 
         template = new ThriftColumnFamilyTemplate<UUID, String>(keyspace, COLUMN_FAMILY, UUIDSerializer.get(), StringSerializer.get());
+    }
+
+    @PreDestroy
+    public void preDestroy() {
+        HFactory.shutdownCluster(cluster);
     }
     
     @Override
