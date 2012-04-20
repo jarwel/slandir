@@ -11,7 +11,7 @@
     </parent>
 
     <groupId>com.slandir</groupId>
-    <artifactId>AccountService</artifactId>
+    <artifactId>account-service</artifactId>
     <version>0.1-SNAPSHOT</version>
 
     <properties>

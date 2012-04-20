@@ -5,14 +5,14 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.slandir</groupId>
-    <artifactId>Slandir</artifactId>
+    <artifactId>slandir</artifactId>
     <packaging>pom</packaging>
     <version>0.1-SNAPSHOT</version>
     <modules>
-        <module>AccountService</module>
-        <module>IdentityService</module>
-        <module>SubmissionService</module>
-        <module>SlandirWeb</module>
+        <module>account-service</module>
+        <module>identity-service</module>
+        <module>submission-service</module>
+        <module>slandir-web</module>
     </modules>
 
     <distributionManagement>

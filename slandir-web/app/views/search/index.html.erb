@@ -1,0 +1,38 @@
+<div class="container">
+  <div class="row">
+    <div class="span3">
+      <%= render :partial => 'layouts/search' %>
+    </div>
+    <div class="span9">
+      <h2>Search Results:</h2>
+      <hr>
+      <% if !@persons.empty? %>
+        <% @persons.each do |person| %>
+          <div class="row">
+            <div class="span2"><%= image_tag "default.jpg", :class => "person-image-small" %></div>
+            <div class="span7">
+              <div class="row">
+                <div class="span3"><h2><%= person.firstName %> <%= person.lastName %></h2></div>
+                <div class="offset3 span1"><%= link_to "Show", search_show_path(:personId => person.id), :class => "btn btn-medium" %></div>
+              </div>
+              <div class="row">
+                <% if !person.birthDate.blank? %>
+                  <div class="span3"><%= format_age(person.birthDate) %> year old <%= person.gender %></div>
+                <% end %>
+              </div>
+              <div class="row">
+                <% if !person.address.blank? %>
+                  <div class="span3"><%= format_city_state_zip(person.address.city, person.address.state) %></div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+          <% if person != @persons.last %> <hr> <% end %>
+        <% end %>
+      <% else %>
+        <div class="offset3">No results match search criteria</div>
+      <% end %>
+    </div>
+  </div>
+</div>
+

@@ -5,4 +5,4 @@ SlandirWeb::Application.config.session_store :cookie_store, :key => '_SlandirWeb
 # Use the database for sessions instead of the cookie-based default,
 # which shouldn't be used to store highly confidential information
 # (show the session table with "rails generate session_migration")
-# SlandirWeb::Application.config.session_store :active_record_store
+# slandir-web::Application.config.session_store :active_record_store

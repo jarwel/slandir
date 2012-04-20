@@ -11,7 +11,7 @@
     </parent>
 
     <groupId>com.slandir</groupId>
-    <artifactId>SlandirWeb</artifactId>
+    <artifactId>slandir-web</artifactId>
     <version>0.1-SNAPSHOT</version>
 
     <build>
