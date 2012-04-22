@@ -1,5 +1,6 @@
 package com.slandir.submission.resource;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import com.slandir.submission.dao.GrievanceDao;
@@ -25,7 +26,7 @@ public class GrievanceResource {
 
     @Inject
     public GrievanceResource(GrievanceDao grievanceDao) {
-        this.grievanceDao = grievanceDao;
+        this.grievanceDao = Preconditions.checkNotNull(grievanceDao, "grievanceDao cannot be null");
     }
 
     @GET
@@ -46,7 +47,7 @@ public class GrievanceResource {
     
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response put(Grievance grievance) {
+    public Response post(Grievance grievance) {
         grievanceDao.save(grievance);
         return Response.ok().build();
     }

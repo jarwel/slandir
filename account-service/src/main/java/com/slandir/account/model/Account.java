@@ -24,9 +24,9 @@ public class Account {
         
     ) {
         this.id = id;
-        this.email = Preconditions.checkNotNull(email);
-        this.firstName = Preconditions.checkNotNull(firstName);
-        this.lastName = Preconditions.checkNotNull(lastName);
+        this.email = Preconditions.checkNotNull(email, "email cannot be null");
+        this.firstName = Preconditions.checkNotNull(firstName, "firstName cannot be null");
+        this.lastName = Preconditions.checkNotNull(lastName, "lastName cannot be null");
         this.password = password;
     }
 

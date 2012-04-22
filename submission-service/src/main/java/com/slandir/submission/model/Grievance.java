@@ -25,12 +25,12 @@ public class Grievance {
         @JsonProperty("description") String description,
         @JsonProperty("created") DateTime created
     ) {
-        this.id = Preconditions.checkNotNull(id);
-        this.accountId = Preconditions.checkNotNull(accountId);
-        this.personId = Preconditions.checkNotNull(personId);
-        this.author = Preconditions.checkNotNull(author);
-        this.description = Preconditions.checkNotNull(description);
-        this.created = Preconditions.checkNotNull(created);
+        this.id = Preconditions.checkNotNull(id, "id cannot be null");
+        this.accountId = Preconditions.checkNotNull(accountId, "accountId cannot be null");
+        this.personId = Preconditions.checkNotNull(personId, "personId cannot be null");
+        this.author = Preconditions.checkNotNull(author, "author cannot be null");
+        this.description = Preconditions.checkNotNull(description, "description cannot be null");
+        this.created = Preconditions.checkNotNull(created, "created cannot be null");
     }
 
     @JsonProperty("id")

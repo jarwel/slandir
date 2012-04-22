@@ -34,7 +34,7 @@ public class Person {
         @JsonProperty("address") Address address
 
     ) {
-        this.id = Preconditions.checkNotNull(id);
+        this.id = Preconditions.checkNotNull(id, "id cannot be null");
         this.firstName = firstName;
         this.middleName = middleName;
         this.lastName = lastName;

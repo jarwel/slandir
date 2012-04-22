@@ -28,7 +28,7 @@ public class AccountResource {
 
     @Inject
     public AccountResource(AccountDao accountDao) {
-        this.accountDao = Preconditions.checkNotNull(accountDao);
+        this.accountDao = Preconditions.checkNotNull(accountDao, "accountDao cannot be null");
     }
 
     @GET

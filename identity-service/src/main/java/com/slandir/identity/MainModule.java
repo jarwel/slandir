@@ -28,10 +28,7 @@ public class MainModule implements Module {
         binder.disableCircularProxies();
         
         binder.bind(PersonDao.class).to(CassandraPersonDao.class).in(Scopes.SINGLETON);
-        
         binder.bind(PersonResource.class).in(Scopes.SINGLETON);
-        
-        //eventBinder(binder).bindEventClient(DescriptorEvent.class);
 
         DiscoveryBinder.discoveryBinder(binder).bindHttpAnnouncement(SERVICE_NAME);
     }

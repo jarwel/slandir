@@ -6,7 +6,7 @@ import com.google.inject.Inject;
 import com.slandir.identity.dao.PersonDao;
 import com.slandir.identity.model.Person;
 import com.slandir.identity.type.State;
-import com.slandir.identity.util.Simulacrum;
+import com.slandir.identity.model.Simulacrum;
 import org.apache.commons.lang.StringUtils;
 
 import javax.ws.rs.Consumes;
@@ -29,7 +29,7 @@ public class PersonResource {
     
     @Inject
     public PersonResource(PersonDao personDao) {
-        this.personDao = Preconditions.checkNotNull(personDao);
+        this.personDao = Preconditions.checkNotNull(personDao, "personDao cannot be null");
     }
 
     @GET
@@ -39,7 +39,7 @@ public class PersonResource {
         Person person = personDao.get(id);
         
         if(person == null) {
-            return Response.noContent().build();
+            return Response.status(Response.Status.NOT_FOUND).build();
         }
         
         return Response.ok(person).build();

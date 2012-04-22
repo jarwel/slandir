@@ -1,7 +1,5 @@
-package com.slandir.identity.util;
+package com.slandir.identity.model;
 
-import com.slandir.identity.model.Address;
-import com.slandir.identity.model.Person;
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 
